@@ -1,6 +1,7 @@
 import streamlit as st
 import re
 import io
+import pandas as pd 
 
 from pypdf import PdfReader
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -159,6 +160,23 @@ if st.button("Analyze Resume"):
 
                 st.subheader("Missing Skills")
                 st.write(missing)
+
+                hart_data = pd.DataFrame({
+                    "skill status": ["matched skills", "missing Skill"],
+                    "Number of skills": [len(matched), len(missing)]
+                })
+
+                st.bar_chart(
+                      chart_data,
+    x="Skill Status",
+    y="Number of Skills"
+)
+
+                st.write(f"Total matched skills: {len(matched)}")
+                st.write(f"Total missing skills: {len(missing)}")
+
+                st.progress(skill_score / 100)
+
 
                 st.info(
                     "These scores are text and keyword similarity "
