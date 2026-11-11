@@ -1,4 +1,3 @@
-
 import streamlit as st
 import re
 import io
@@ -18,16 +17,32 @@ st.title("🤖 AI Resume Analyzer")
 st.write("Analyze your resume against a job description using NLP.")
 
 
-skills_database = [
-    "python", "java", "c++", "machine learning",
-    "deep learning", "sql", "pandas", "numpy",
-    "scikit-learn", "tensorflow", "pytorch",
-    "nlp", "data analysis", "excel",
-    "power bi", "tableau", "flask", "fastapi",
-    "html", "css", "javascript", "react",
-    "docker", "git"
-]
-
+skills_database = {
+    "python": ["python"],
+    "java": ["java"],
+    "c++": ["c++", "cpp"],
+    "machine learning": ["machine learning", "ml"],
+    "deep learning": ["deep learning", "deep neural networks"],
+    "sql": ["sql", "structured query language"],
+    "pandas": ["pandas"],
+    "numpy": ["numpy"],
+    "scikit-learn": ["scikit-learn", "sklearn", "scikit learn"],
+    "tensorflow": ["tensorflow"],
+    "pytorch": ["pytorch", "torch"],
+    "nlp": ["nlp", "natural language processing"],
+    "data analysis": ["data analysis", "data analytics"],
+    "excel": ["excel", "microsoft excel"],
+    "power bi": ["power bi", "powerbi"],
+    "tableau": ["tableau"],
+    "flask": ["flask"],
+    "fastapi": ["fastapi"],
+    "html": ["html"],
+    "css": ["css"],
+    "javascript": ["javascript", "js"],
+    "react": ["react", "reactjs"],
+    "docker": ["docker"],
+    "git": ["git", "github"]
+}
 
 def clean_text(text):
     text = text.lower()
@@ -40,13 +55,16 @@ def extract_skills(text):
     text = text.lower()
     found = []
 
-    for skill in skills_database:
-        pattern = r'(?<!\w)' + re.escape(skill) + r'(?!\w)'
+    for skill, variations in skills_database.items():
+        for variation in variations:
+            pattern = r'(?<!\w)' + re.escape(variation) + r'(?!\w)'
 
-        if re.search(pattern, text):
-            found.append(skill)
+            if re.search(pattern, text):
+                found.append(skill)
+                break
 
     return found
+
 
 
 def analyze_resume(resume_text, job_description):
